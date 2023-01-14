@@ -3,16 +3,53 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import Loading from "../../Shared/Loading";
+  import {toast} from "react-toastify";
+
 
 const Modal = ({ date, treatment, setTreatment }) => {
-  const { Name, slot } = treatment;
+  const { _id,Name, slot } = treatment;
   const [user,loading]=useAuthState(auth);
+  const formatDate=format(date,"PP");
   const handleBooking = (event) => {
     event.preventDefault();
     const slot = event.target.slot.value;
-    console.log(slot);
-    setTreatment(null);
+   
+     const booking = {
+       treatmentId: _id,
+       treatment: Name,
+       date: formatDate,
+       slot,
+       patient: user.email,
+       patientName: user.displayName,
+       phone: event.target.phone.value,
+     };
+      fetch("http://localhost:5000/booking",
+      {
+        method:'POST',
+        headers:{
+            'content-type':'application/json'
+        },
+        body:JSON.stringify(booking)
+      }
+      )
+      .then(res=>res.json())
+      .then(data=>{
+       if(data.success){
+       
+        toast(`Appointment is set, ${formatDate} at ${slot}`)
+
+       }
+       else{
+        toast(`You already have an appointment of ${treatment}, ${formatDate} at ${slot}`);
+       }
+         setTreatment(null);
+
+      })
+     
+
   };
+ 
+ 
   if(loading){
     return <Loading></Loading>
   }
@@ -43,9 +80,9 @@ const Modal = ({ date, treatment, setTreatment }) => {
               name="slot"
               className="select select-bordered w-full max-w-xs"
             >
-              {slot ? (
+              {slot ? 
                 slot.map((s) => <option value={s}>{s}</option>)
-              ) : (
+               : (
                 <p>nothing</p>
               )}
             </select>
@@ -70,6 +107,7 @@ const Modal = ({ date, treatment, setTreatment }) => {
               className="input input-bordered w-full max-w-xs"
             />
             <input
+            name="Submit"
               type="submit"
               value="Submit"
               className="btn btn-accent text-white"

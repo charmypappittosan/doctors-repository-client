@@ -36,11 +36,11 @@ const Modal = ({ date, treatment, setTreatment }) => {
       .then(data=>{
        if(data.success){
        
-        toast(`Appointment is set, ${formatDate} at ${slot}`)
+        toast(`Appointment is set, ${date} at ${slot}`)
 
        }
        else{
-        toast(`You already have an appointment of ${treatment}, ${formatDate} at ${slot}`);
+        toast(`You already have an appointment of ${Name}, ${formatDate} at ${slot}`);
        }
          setTreatment(null);
 

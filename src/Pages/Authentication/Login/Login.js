@@ -7,7 +7,6 @@ import {
 import { useForm } from "react-hook-form";
 import Loading from "../../../Shared/Loading";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Home from "../../Homepage/Home/Home";
 
 const Login = () => {
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);

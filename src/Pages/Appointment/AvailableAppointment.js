@@ -8,7 +8,9 @@ const AvailableAppointment = ({ date }) => {
   const [treatment,setTreatment]=useState([]);
   const formatedDate=format(date,'PP');
   useEffect(() => {
-    fetch(`http://localhost:5000/available?date=${formatedDate}`)
+    fetch(
+      `https://doctors-portal-server-production-1e67.up.railway.app/available?date=${formatedDate}`
+    )
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);

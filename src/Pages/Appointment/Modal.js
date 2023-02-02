@@ -23,28 +23,27 @@ const Modal = ({ date, treatment, setTreatment }) => {
        patientName: user.displayName,
        phone: event.target.phone.value,
      };
-      fetch("http://localhost:5000/booking",
-      {
-        method:'POST',
-        headers:{
-            'content-type':'application/json'
-        },
-        body:JSON.stringify(booking)
-      }
+      fetch(
+        "https://doctors-portal-server-production-1e67.up.railway.app/booking",
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(booking),
+        }
       )
-      .then(res=>res.json())
-      .then(data=>{
-       if(data.success){
-       
-        toast(`Appointment is set, ${date} at ${slot}`)
-
-       }
-       else{
-        toast(`You already have an appointment of ${Name}, ${formatDate} at ${slot}`);
-       }
-         setTreatment(null);
-
-      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            toast(`Appointment is set, ${date} at ${slot}`);
+          } else {
+            toast(
+              `You already have an appointment of ${Name}, ${formatDate} at ${slot}`
+            );
+          }
+          setTreatment(null);
+        });
      
 
   };
